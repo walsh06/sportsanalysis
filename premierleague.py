@@ -35,7 +35,7 @@ def getHighestPoints(seasons, writeToFile=False):
     if writeToFile:
         with open("highestPoints.csv", "w") as f:
             for winner in sortedWinders:
-                f.write("{}\n".format(",".join(winner)))
+                f.write("{}".format(",".join(winner)))
 
 def getLowestPoints(seasons, writeToFile=False):
     idx = headers.index('Pts')
@@ -49,7 +49,7 @@ def getLowestPoints(seasons, writeToFile=False):
     if writeToFile:
         with open("lowestPoints.csv", "w") as f:
             for losers in sortedLosers:
-                f.write("{}\n".format(",".join(losers)))
+                f.write("{}".format(",".join(losers)))
 
 def getLowestSurvivingPoints(seasons, writeToFile=False):
     idx = headers.index('Pts')
@@ -62,9 +62,9 @@ def getLowestSurvivingPoints(seasons, writeToFile=False):
     for loser in sortedSurvivors:
         print loser
     if writeToFile:
-        with open("lowestPoints.csv", "w") as f:
+        with open("lowestSurvivingPoints.csv", "w") as f:
             for survivors in sortedSurvivors:
-                f.write("{}\n".format(",".join(survivors)))
+                f.write("{}".format(",".join(survivors)))
 
 seasons = readCSV("premierleague.csv")
 getHighestPoints(seasons)
