@@ -22,7 +22,33 @@ def readCSV(filename):
             currentSeason.append(line.split(','))
     seasons[year] = currentSeason
     return seasons
-            
+
+def getPointsDifference(seasons, writeToFile=False):
+    year = 2015
+    result = {}
+    while year > 1992:
+        currentSeason = []
+        for team in seasons[str(year)]:
+            name = team[1].replace('(Q)', '').replace('(C)', '').replace('(R)', '').replace('(X)', '').strip()
+            for prevTeam in seasons[str(year - 1)]:
+                prevName = prevTeam[1].replace('(Q)', '').replace('(C)', '').replace('(R)', '').replace('(X)', '').strip()
+                if name == prevName:
+                    currentSeason.append((name, str(int(prevTeam[0]) - int(team[0])), team[0], prevTeam[0]))
+        result[str(year)] = currentSeason
+        year -= 1
+    allDiffs = []
+    for season in result:
+        for team in result[season]:
+            allDiffs.append((season, team[0], team[1], team[2], team[3]))
+    sortedDiffs = sorted(allDiffs,  reverse=True, key=lambda tup: int(tup[2]))
+    printHeader("Position Difference between Seasons")
+    for diff in sortedDiffs:
+        print diff
+    if writeToFile:
+        with open("pointsDiff.csv", "w") as f:
+            for diff in sortedDiffs:
+                f.write("{}\n".format(",".join(diff)))
+               
 def getHighestPoints(seasons, writeToFile=False):
     idx = headers.index('Pts')
     winners = []
@@ -67,6 +93,7 @@ def getLowestSurvivingPoints(seasons, writeToFile=False):
                 f.write("{}".format(",".join(survivors)))
 
 seasons = readCSV("premierleague.csv")
-getHighestPoints(seasons)
-getLowestPoints(seasons)
-getLowestSurvivingPoints(seasons)
+#getHighestPoints(seasons)
+#getLowestPoints(seasons)
+#getLowestSurvivingPoints(seasons)
+getPointsDifference(seasons, True)
